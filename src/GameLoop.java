@@ -1,19 +1,23 @@
 
-import java.awt.*; 
-import java.awt.event.KeyEvent; 
+import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage; 
 import javax.swing.JFrame; 
 
 public class GameLoop extends JFrame {
     private boolean isRunning = true;
-    private int fps = 30;
+    private int fps = 60;
     private int windowWidth = 500;
     private int windowHeight = 500;
-    private long time = 1;
+    private long time = 1000;
     private BufferedImage backBuffer;
     private Insets insets;
+    private AL AL = new AL();
+    private Double x = 50.0;
+    private Double y = 50.0;
 
-    private int x = 0;
+    private Player player = new Player();
 
     public void Run() {
         init();
@@ -38,7 +42,6 @@ public class GameLoop extends JFrame {
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
-
         insets = getInsets();
         setSize(insets.left + windowWidth + insets.right, insets.top + windowHeight + insets.bottom);
         backBuffer = new BufferedImage(windowWidth, windowHeight, BufferedImage.TYPE_INT_RGB);
@@ -46,24 +49,48 @@ public class GameLoop extends JFrame {
 
     private void update()
     {
-        x++;
-        if(x == 500) {
-            x = 1;
-        }
+        addKeyListener(AL);
     }
 
-    private void draw()
-    {               
-        Graphics g = getGraphics(); 
+    private void draw() {
+        Graphics g = getGraphics();
+        Graphics bbg = backBuffer.getGraphics();
+        bbg.setColor(Color.WHITE);
+        bbg.fillRect(0, 0, windowWidth, windowHeight);
+        bbg.setColor(Color.BLACK);
+        player.draw(g, bbg);
+        g.drawImage(backBuffer, insets.left, insets.top, this);
+    }
 
-        Graphics bbg = backBuffer.getGraphics(); 
 
-        bbg.setColor(Color.WHITE); 
-        bbg.fillRect(0, 0, windowWidth, windowHeight); 
+    public class AL extends KeyAdapter {
+        private double buff = 0.001;
+        String direction = "null";
+        @Override
+        public void keyPressed(KeyEvent event) {
+            int keyCode = event.getKeyCode();
+            if (keyCode == event.VK_LEFT)
+            {
+                player.setDirection("left");
+            }
+            if (keyCode == event.VK_RIGHT)
+            {
+                player.setDirection("right");
+            }
+            if (keyCode == event.VK_UP)
+            {
+                player.setDirection("up");
+            }
+            if (keyCode == event.VK_DOWN)
+            {
+                player.setDirection("down");
+            }
+        }
 
-        bbg.setColor(Color.BLACK); 
-        bbg.drawOval(x, 10, 20, 20); 
-
-        g.drawImage(backBuffer, insets.left, insets.top, this); 
-    } 
+        @Override
+        public void keyReleased(KeyEvent event) {
+        }
+    }
 }
+
+
