@@ -1,4 +1,3 @@
-import input.InputHandler; 
 
 import java.awt.*; 
 import java.awt.event.KeyEvent; 
@@ -6,16 +5,15 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame; 
 
 public class GameLoop extends JFrame {
-    boolean isRunning = true;
-    int fps = 30;
-    int windowWidth = 500;
-    int windowHight = 500;
+    private boolean isRunning = true;
+    private int fps = 30;
+    private int windowWidth = 500;
+    private int windowHeight = 500;
+    private long time = 1;
+    private BufferedImage backBuffer;
+    private Insets insets;
 
-    BufferedImage backbuffer;
-    Insets insets;
-    InputHandler input;
-
-    int x = 0;
+    private int x = 0;
 
     public void Run() {
         init();
@@ -28,41 +26,36 @@ public class GameLoop extends JFrame {
                     Thread.sleep(time);
                 }
                 catch(Exception e) {
-                    
+                    System.out.print("IT BROKE");
                 }
             }
         }
     }
 
-    void init() {
+    private void init() {
         setTitle("Snake");
-        setSize(windowWidth, windowHight);
+        setSize(windowWidth, windowHeight);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
 
         insets = getInsets();
         setSize(insets.left + windowWidth + insets.right, insets.top + windowHeight + insets.bottom);
-        backbuffer = new BufferedImage(windowWidth, windowHeight, BufferdImage.TYPE_INT_RGB);
-        input = new InputHandler(this);
+        backBuffer = new BufferedImage(windowWidth, windowHeight, BufferedImage.TYPE_INT_RGB);
     }
 
-    void update() 
-    { 
-        if (input.isKeyDown(KeyEvent.VK_RIGHT)) 
-            { 
-                x += 5; 
-            } 
-        if (input.isKeyDown(KeyEvent.VK_LEFT)) 
-            { 
-                x -= 5; 
-            } 
-    } 
+    private void update()
+    {
+        x++;
+        if(x == 500) {
+            x = 1;
+        }
+    }
 
     /** 
      * This method will draw everything 
      */ 
-    void draw() 
+    private void draw()
     {               
         Graphics g = getGraphics(); 
 
