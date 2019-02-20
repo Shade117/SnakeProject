@@ -1,25 +1,21 @@
-
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage; 
-import javax.swing.JFrame; 
+import java.awt.image.BufferedImage;
 
-public class GameLoop extends JFrame {
+class GameLoop extends JFrame {
     private boolean isRunning = true;
     private int fps = 60;
     private int windowWidth = 500;
     private int windowHeight = 500;
-    private long time = 1000;
+    private long time;
     private BufferedImage backBuffer;
     private Insets insets;
-    private AL AL = new AL();
-    private Double x = 50.0;
-    private Double y = 50.0;
 
     private Player player = new Player();
 
-    public void Run() {
+    void Run() {
         init();
         while(isRunning) {
             update();
@@ -49,7 +45,7 @@ public class GameLoop extends JFrame {
 
     private void update()
     {
-        addKeyListener(AL);
+        addKeyListener(new AL());
     }
 
     private void draw() {
@@ -64,24 +60,23 @@ public class GameLoop extends JFrame {
 
 
     public class AL extends KeyAdapter {
-        private double buff = 0.001;
         String direction = "null";
         @Override
         public void keyPressed(KeyEvent event) {
             int keyCode = event.getKeyCode();
-            if (keyCode == event.VK_LEFT)
+            if (keyCode == KeyEvent.VK_LEFT)
             {
                 player.setDirection("left");
             }
-            if (keyCode == event.VK_RIGHT)
+            if (keyCode == KeyEvent.VK_RIGHT)
             {
                 player.setDirection("right");
             }
-            if (keyCode == event.VK_UP)
+            if (keyCode == KeyEvent.VK_UP)
             {
                 player.setDirection("up");
             }
-            if (keyCode == event.VK_DOWN)
+            if (keyCode == KeyEvent.VK_DOWN)
             {
                 player.setDirection("down");
             }
