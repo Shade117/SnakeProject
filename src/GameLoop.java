@@ -52,9 +52,6 @@ public class GameLoop extends JFrame {
         }
     }
 
-    /** 
-     * This method will draw everything 
-     */ 
     private void draw()
     {               
         Graphics g = getGraphics(); 
